@@ -1,6 +1,4 @@
-﻿// src/LibraryManagementSystem.API/Controllers/LoansController.cs
-
-using LibraryManagementSystem.Application.Common;
+﻿using LibraryManagementSystem.Application.Common;
 using LibraryManagementSystem.Application.Features.Loans.Commands;
 using LibraryManagementSystem.Application.Features.Loans.Dtos;
 using LibraryManagementSystem.Application.Features.Loans.Queries;

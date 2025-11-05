@@ -1,6 +1,4 @@
-﻿// src/LibraryManagementSystem.API/Controllers/BooksController.cs
-
-using LibraryManagementSystem.Application.Common;
+﻿using LibraryManagementSystem.Application.Common;
 using LibraryManagementSystem.Application.Features.Books.Commands;
 using LibraryManagementSystem.Application.Features.Books.DTOs;
 using LibraryManagementSystem.Application.Features.Books.Queries;
