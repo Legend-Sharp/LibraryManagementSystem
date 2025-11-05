@@ -1,8 +1,9 @@
 ﻿// src/LibraryManagementSystem.API/Controllers/LoansController.cs
-using LibraryManagementSystem.Application.Loans.Commands;
-using LibraryManagementSystem.Application.Loans.Queries;
-using LibraryManagementSystem.Application.Loans.DTOs;
+
 using LibraryManagementSystem.Application.Common;
+using LibraryManagementSystem.Application.Features.Loans.Commands;
+using LibraryManagementSystem.Application.Features.Loans.Dtos;
+using LibraryManagementSystem.Application.Features.Loans.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

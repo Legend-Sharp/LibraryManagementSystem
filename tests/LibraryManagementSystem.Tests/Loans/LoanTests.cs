@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using LibraryManagementSystem.Application.Loans.Queries;
+using LibraryManagementSystem.Application.Features.Loans.Queries;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.ValueObjects;
 

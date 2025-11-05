@@ -4,7 +4,7 @@ using LibraryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Members.Commands;
+namespace LibraryManagementSystem.Application.Features.Members.Commands;
 
 public sealed record CreateMemberCommand(string Name, string Email) : IRequest<Guid>;
 

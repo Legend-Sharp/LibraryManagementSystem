@@ -1,10 +1,10 @@
 ﻿using LibraryManagementSystem.Application.Abstractions;
 using LibraryManagementSystem.Application.Common;
-using LibraryManagementSystem.Application.Loans.DTOs;
+using LibraryManagementSystem.Application.Features.Loans.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Loans.Queries;
+namespace LibraryManagementSystem.Application.Features.Loans.Queries;
 
 public sealed record GetLoansQuery(
     int Page = 1,

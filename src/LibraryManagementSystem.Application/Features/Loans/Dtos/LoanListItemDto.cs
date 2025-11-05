@@ -1,4 +1,4 @@
-﻿namespace LibraryManagementSystem.Application.Loans.DTOs;
+﻿namespace LibraryManagementSystem.Application.Features.Loans.Dtos;
 
 public sealed record LoanListItemDto(
     Guid Id,

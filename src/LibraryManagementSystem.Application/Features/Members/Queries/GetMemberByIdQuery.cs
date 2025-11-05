@@ -1,9 +1,9 @@
 ﻿using LibraryManagementSystem.Application.Abstractions;
-using LibraryManagementSystem.Application.Members.DTOs;
+using LibraryManagementSystem.Application.Features.Members.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Members.Queries;
+namespace LibraryManagementSystem.Application.Features.Members.Queries;
 
 public sealed record GetMemberByIdQuery(Guid Id) : IRequest<MemberDto?>;
 

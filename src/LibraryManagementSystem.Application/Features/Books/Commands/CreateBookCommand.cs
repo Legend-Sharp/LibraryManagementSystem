@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 using LibraryManagementSystem.Application.Abstractions;
-using LibraryManagementSystem.Application.Books.DTOs;
+using LibraryManagementSystem.Application.Features.Books.DTOs;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.ValueObjects;
 using MediatR;
 
-namespace LibraryManagementSystem.Application.Books.Commands;
+namespace LibraryManagementSystem.Application.Features.Books.Commands;
 
-public sealed record CreateBookCommand(string Title, string Author, string Isbn, int TotalCopies = 1)
-    : IRequest<BookDto>;
+public sealed record CreateBookCommand(string Title, string Author, string Isbn, int TotalCopies = 1) : IRequest<BookDto>;
 
 public sealed class CreateBookValidator : AbstractValidator<CreateBookCommand>
 {

@@ -4,7 +4,7 @@ using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.ValueObjects;
 using MediatR;
 
-namespace LibraryManagementSystem.Application.Books.Commands;
+namespace LibraryManagementSystem.Application.Features.Books.Commands;
 
 public sealed record BulkImportBooksCommand(IReadOnlyList<BulkBook> Books) : IRequest<BulkImportResult>;
 

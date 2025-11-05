@@ -4,7 +4,7 @@ using LibraryManagementSystem.Domain.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Books.Events;
+namespace LibraryManagementSystem.Application.Features.Books.Events;
 
 public sealed class BookAvailabilityOnLoanStartedHandler(IAppDbContext db) : INotificationHandler<DomainEventNotification<LoanStartedDomainEvent>>
 {
