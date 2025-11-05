@@ -1033,7 +1033,8 @@
         "dependencies": {
           "FluentValidation": "12.1.0",
           "LibraryManagementSystem.Domain": "1.0.0",
-          "MediatR.Extensions.Microsoft.DependencyInjection": "11.1.0"
+          "MediatR.Extensions.Microsoft.DependencyInjection": "11.1.0",
+          "Microsoft.EntityFrameworkCore": "9.0.10"
         },
         "runtime": {
           "LibraryManagementSystem.Application.dll": {
