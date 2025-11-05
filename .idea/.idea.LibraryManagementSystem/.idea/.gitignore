@@ -1,13 +1,53 @@
-﻿# Default ignored files
+﻿## ========== .NET build output ==========
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.cache
+*.db
+*.log
+
+## NuGet packages
+*.nuspec
+*.nupkg
+packages/
+
+## ========== Rider / IntelliJ ==========
+.idea/
+*.iml
 /shelf/
 /workspace.xml
-# Rider ignored files
-/.idea.LibraryManagementSystem.iml
 /modules.xml
 /contentModel.xml
 /projectSettingsUpdater.xml
-# Editor-based HTTP Client requests
+
+## Editor-based HTTP Client requests
 /httpRequests/
-# Datasource local storage ignored files
+
+## Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+## ========== Visual Studio ==========
+*.user
+*.suo
+*.vs/
+
+## ========== Test output ==========
+TestResults/
+*.coverage
+*.coveragejson
+
+## ========== OS generated ==========
+.DS_Store
+Thumbs.db
+
+## ========== EF Core ==========
+# Migrations snapshots are optional:
+# *Snapshot.cs
+
+## ========== Secrets ==========
+**/secrets.json
+appsettings.Development.json
