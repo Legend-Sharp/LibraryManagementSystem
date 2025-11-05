@@ -10,8 +10,12 @@ public sealed record GetMemberByIdQuery(Guid Id) : IRequest<MemberDto?>;
 public sealed class GetMemberByIdHandler(IAppDbContext db) : IRequestHandler<GetMemberByIdQuery, MemberDto?>
 {
     public async Task<MemberDto?> Handle(GetMemberByIdQuery r, CancellationToken ct)
-        => await db.Members.AsNoTracking()
+    {
+        var result = await db.Members.AsNoTracking()
             .Where(m => m.Id == r.Id)
             .Select(m => new MemberDto(m.Id, m.Name, m.Email))
             .FirstOrDefaultAsync(ct);
+
+        return result ?? throw new KeyNotFoundException($"Member with id '{r.Id}' not found.");
+    }
 }

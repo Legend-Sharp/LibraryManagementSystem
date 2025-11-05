@@ -1,0 +1,49 @@
+﻿## ========== .NET build output ==========
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.db
+
+## NuGet packages
+*.nupkg
+packages/
+
+## ========== Rider / IntelliJ ==========
+.idea/
+*.iml
+shelf/
+workspace.xml
+modules.xml
+contentModel.xml
+projectSettingsUpdater.xml
+
+## ========== Visual Studio ==========
+*.user
+*.suo
+.vs/
+
+## Test output
+TestResults/
+*.coverage
+*.coveragejson
+
+## ========== HTTP Client ==========
+httpRequests/
+
+## ========== Data Sources ==========
+dataSources/
+dataSources.local.xml
+
+## ========== OS generated ==========
+.DS_Store
+Thumbs.db
+
+## ========== EF Core ==========
+*Snapshot.cs
+
+## ========== Secrets ==========
+**/secrets.json
