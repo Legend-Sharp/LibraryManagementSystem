@@ -12,17 +12,6 @@ namespace LibraryManagementSystem.API.Controllers;
 [Route("api/[controller]")]
 public class LoansController(IMediator mediator) : ControllerBase
 {
-    [HttpPost("borrow")]
-    public async Task<ActionResult<Guid>> Borrow([FromBody] BorrowBookForMemberCommand cmd)
-        => Ok(await mediator.Send(cmd));
-
-    [HttpPost("{loanId:guid}/return")]
-    public async Task<IActionResult> Return(Guid loanId)
-    {
-        await mediator.Send(new ReturnBookForMemberCommand(loanId));
-        return NoContent();
-    }
-
     [HttpGet]
     public async Task<ActionResult<PagedResult<LoanListItemDto>>> Get(
         [FromQuery] int page = 1,
@@ -31,4 +20,15 @@ public class LoansController(IMediator mediator) : ControllerBase
         [FromQuery] Guid? bookId = null,
         [FromQuery] bool? active = null)
         => Ok(await mediator.Send(new GetLoansQuery(page, pageSize, memberId, bookId, active)));
+    
+    [HttpPost("borrow")]
+    public async Task<ActionResult<Guid>> Borrow([FromBody] BorrowBookForMemberCommand cmd)
+        => Ok(await mediator.Send(cmd));
+
+    [HttpPost("{loanId}/return")]
+    public async Task<IActionResult> Return(Guid loanId)
+    {
+        await mediator.Send(new ReturnBookForMemberCommand(loanId));
+        return NoContent();
+    }
 }

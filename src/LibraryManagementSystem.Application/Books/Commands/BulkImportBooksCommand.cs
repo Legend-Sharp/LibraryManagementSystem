@@ -3,7 +3,6 @@ using LibraryManagementSystem.Application.Abstractions;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.ValueObjects;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Application.Books.Commands;
 
@@ -21,17 +20,13 @@ public sealed class BulkImportValidator : AbstractValidator<BulkImportBooksComma
     }
 }
 
-public sealed class BulkImportBooksHandler : IRequestHandler<BulkImportBooksCommand, BulkImportResult>
+public sealed class BulkImportBooksHandler(IAppDbContext db) : IRequestHandler<BulkImportBooksCommand, BulkImportResult>
 {
-    private readonly IAppDbContext _db;
-    public BulkImportBooksHandler(IAppDbContext db) => _db = db;
-
     public async Task<BulkImportResult> Handle(BulkImportBooksCommand request, CancellationToken ct)
     {
         var errors = new List<string>();
         var toAdd = new List<Book>(request.Books.Count);
 
-        // Pre-validate + build entities
         foreach (var item in request.Books)
         {
             try
@@ -44,15 +39,14 @@ public sealed class BulkImportBooksHandler : IRequestHandler<BulkImportBooksComm
             }
         }
 
-        // Concurrency-safe batched insert (good perf with SQL Server)
         const int batchSize = 500;
         for (var i = 0; i < toAdd.Count; i += batchSize)
         {
             var batch = toAdd.Skip(i).Take(batchSize).ToList();
-            await _db.Books.AddRangeAsync(batch, ct);
-            await _db.SaveChangesAsync(ct);
+            await db.Books.AddRangeAsync(batch, ct);
+            await db.SaveChangesAsync(ct);
         }
 
-        return new(request.Books.Count, toAdd.Count, errors.Count, errors);
+        return new BulkImportResult(request.Books.Count, toAdd.Count, errors.Count, errors);
     }
 }

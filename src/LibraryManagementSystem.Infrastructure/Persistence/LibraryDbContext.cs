@@ -66,7 +66,6 @@ public class LibraryDbContext : DbContext, IAppDbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
-        // 1) find all entities with domain events
         var domainEntities = ChangeTracker.Entries<Entity>()
             .Where(x => x.Entity.DomainEvents.Any())
             .ToList();
@@ -75,10 +74,8 @@ public class LibraryDbContext : DbContext, IAppDbContext
             .SelectMany(x => x.Entity.DomainEvents)
             .ToList();
 
-        // 2) clear before dispatching
         domainEntities.ForEach(x => x.Entity.ClearDomainEvents());
 
-        // 3) publish via MediatR
         foreach (var domainEvent in domainEvents)
         {
             var notification = typeof(DomainEventNotification<>)

@@ -7,8 +7,7 @@ namespace LibraryManagementSystem.Application.Members.Queries;
 
 public sealed record GetMemberByIdQuery(Guid Id) : IRequest<MemberDto?>;
 
-public sealed class GetMemberByIdHandler(IAppDbContext db)
-    : IRequestHandler<GetMemberByIdQuery, MemberDto?>
+public sealed class GetMemberByIdHandler(IAppDbContext db) : IRequestHandler<GetMemberByIdQuery, MemberDto?>
 {
     public async Task<MemberDto?> Handle(GetMemberByIdQuery r, CancellationToken ct)
         => await db.Members.AsNoTracking()

@@ -6,15 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Application.Members.Queries;
 
-public sealed record GetMembersQuery(int Page = 1, int PageSize = 20, string? Search = null)
-    : IRequest<PagedResult<MemberDto>>, ICacheableQuery
+public sealed record GetMembersQuery(int Page = 1, int PageSize = 20, string? Search = null) : IRequest<PagedResult<MemberDto>>, ICacheableQuery
 {
     public string CacheKey => $"members:p{Page}:s{PageSize}:q{Search ?? ""}";
     public TimeSpan? AbsoluteExpiration => TimeSpan.FromSeconds(30);
 }
 
-public sealed class GetMembersQueryHandler(IAppDbContext db)
-    : IRequestHandler<GetMembersQuery, PagedResult<MemberDto>>
+public sealed class GetMembersQueryHandler(IAppDbContext db) : IRequestHandler<GetMembersQuery, PagedResult<MemberDto>>
 {
     public async Task<PagedResult<MemberDto>> Handle(GetMembersQuery r, CancellationToken ct)
     {
@@ -26,7 +24,7 @@ public sealed class GetMembersQueryHandler(IAppDbContext db)
             q = q.Where(m => m.Name.Contains(s) || m.Email.Contains(s));
         }
 
-        var total = await q.LongCountAsync(ct);
+        var total = await q.CountAsync(ct);
         var items = await q
             .OrderBy(m => m.Name)
             .Skip((r.Page - 1) * r.PageSize)

@@ -12,26 +12,30 @@ public sealed record GetBooksQuery(int Page = 1, int PageSize = 20, string? Sear
     public TimeSpan? AbsoluteExpiration => TimeSpan.FromSeconds(30);
 }
 
-public sealed class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, PagedResult<BookDto>>
+public sealed class GetBooksQueryHandler(IAppDbContext db) : IRequestHandler<GetBooksQuery, PagedResult<BookDto>>
 {
-    private readonly IAppDbContext _db;
-    public GetBooksQueryHandler(IAppDbContext db) => _db = db;
-
     public async Task<PagedResult<BookDto>> Handle(GetBooksQuery request, CancellationToken ct)
     {
-        var q = _db.Books.AsNoTracking();
+        var q = db.Books.AsNoTracking();
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
             var s = request.Search.Trim();
             q = q.Where(b => b.Title.Contains(s) || b.Author.Contains(s) || b.Isbn.Value.Contains(s));
         }
 
-        var total = await q.LongCountAsync(ct);
+        var total = await q.CountAsync(ct);
         var items = await q
             .OrderBy(b => b.Title)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(b => new BookDto(b.Id, b.Title, b.Author, b.Isbn.Value, b.TotalCopies, b.AvailableCopies))
+            .Select(b => 
+                new BookDto(
+                    b.Id,
+                    b.Title,
+                    b.Author,
+                    b.Isbn.Value,
+                    b.TotalCopies,
+                    b.AvailableCopies))
             .ToListAsync(ct);
 
         return new PagedResult<BookDto>(items, request.Page, request.PageSize, total);

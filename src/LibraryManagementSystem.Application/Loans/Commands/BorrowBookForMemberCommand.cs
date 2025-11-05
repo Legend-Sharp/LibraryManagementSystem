@@ -33,8 +33,8 @@ public sealed class BorrowBookForMemberHandler(IAppDbContext db) : IRequestHandl
         if (hasActive) throw new InvalidOperationException("Member already has an active loan for this book.");
 
         var loan = Loan.Create(request.MemberId, request.BookId, now, request.DueAt);
+        
         await db.Loans.AddAsync(loan, ct);
-
         await db.SaveChangesAsync(ct);
 
         return loan.Id;

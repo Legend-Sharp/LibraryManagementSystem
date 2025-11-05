@@ -21,16 +21,13 @@ public sealed class CreateBookValidator : AbstractValidator<CreateBookCommand>
     }
 }
 
-public sealed class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
+public sealed class CreateBookHandler(IAppDbContext db) : IRequestHandler<CreateBookCommand, BookDto>
 {
-    private readonly IAppDbContext _db;
-    public CreateBookHandler(IAppDbContext db) => _db = db;
-
     public async Task<BookDto> Handle(CreateBookCommand request, CancellationToken ct)
     {
         var book = Book.Create(request.Title, request.Author, Isbn.Create(request.Isbn), request.TotalCopies);
-        await _db.Books.AddAsync(book, ct);
-        await _db.SaveChangesAsync(ct);
+        await db.Books.AddAsync(book, ct);
+        await db.SaveChangesAsync(ct);
 
         return new BookDto(book.Id, book.Title, book.Author, book.Isbn.Value, book.TotalCopies, book.AvailableCopies);
     }

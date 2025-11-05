@@ -26,6 +26,7 @@ public sealed class ReturnBookForMemberHandler(IAppDbContext db) : IRequestHandl
         loan.Return(now);
 
         await db.SaveChangesAsync(ct);
+        
         return Unit.Value;
     }
 

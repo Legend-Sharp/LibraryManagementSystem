@@ -11,10 +11,6 @@ namespace LibraryManagementSystem.API.Controllers;
 [Route("api/[controller]")]
 public class MembersController(IMediator mediator) : ControllerBase
 {
-    [HttpPost]
-    public async Task<ActionResult<Guid>> Create([FromBody] CreateMemberCommand cmd)
-        => Ok(await mediator.Send(cmd));
-
     [HttpGet]
     public async Task<ActionResult<PagedResult<MemberDto>>> GetAll(
         [FromQuery] int page = 1,
@@ -22,7 +18,11 @@ public class MembersController(IMediator mediator) : ControllerBase
         [FromQuery] string? search = null)
         => Ok(await mediator.Send(new GetMembersQuery(page, pageSize, search)));
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<MemberDto?>> GetById(Guid id)
         => Ok(await mediator.Send(new GetMemberByIdQuery(id)));
+    
+    [HttpPost]
+    public async Task<ActionResult<Guid>> Create([FromBody] CreateMemberCommand cmd)
+        => Ok(await mediator.Send(cmd));
 }

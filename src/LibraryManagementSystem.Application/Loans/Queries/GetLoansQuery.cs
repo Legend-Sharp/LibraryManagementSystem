@@ -11,10 +11,13 @@ public sealed record GetLoansQuery(
     int PageSize = 20,
     Guid? MemberId = null,
     Guid? BookId = null,
-    bool? Active = null) : IRequest<PagedResult<LoanListItemDto>>;
+    bool? Active = null) : IRequest<PagedResult<LoanListItemDto>>, ICacheableQuery
+{
+    public string CacheKey => $"loans:p{Page}:s{PageSize}:m{MemberId}:b{BookId}:a{Active}";
+    public TimeSpan? AbsoluteExpiration => TimeSpan.FromSeconds(30);
+}
 
-public sealed class GetLoansQueryHandler(IAppDbContext db)
-    : IRequestHandler<GetLoansQuery, PagedResult<LoanListItemDto>>
+public sealed class GetLoansQueryHandler(IAppDbContext db) : IRequestHandler<GetLoansQuery, PagedResult<LoanListItemDto>>
 {
     public async Task<PagedResult<LoanListItemDto>> Handle(GetLoansQuery r, CancellationToken ct)
     {
@@ -28,15 +31,23 @@ public sealed class GetLoansQueryHandler(IAppDbContext db)
         if (r.BookId   is { } bid) q = q.Where(x => x.l.BookId == bid);
         if (r.Active   is { } act) q = q.Where(x => (x.l.ReturnedAt == null) == act);
 
-        var total = await q.LongCountAsync(ct);
+        var total = await q.CountAsync(ct);
 
         var items = await q
             .OrderByDescending(x => x.l.BorrowedAt)
             .Skip((r.Page - 1) * r.PageSize)
             .Take(r.PageSize)
-            .Select(x => new LoanListItemDto(
-                x.l.Id, x.l.MemberId, x.Name, x.l.BookId, x.Title,
-                x.l.BorrowedAt, x.l.DueAt, x.l.ReturnedAt, x.l.ReturnedAt == null))
+            .Select(x => 
+                new LoanListItemDto(
+                    x.l.Id,
+                    x.l.MemberId,
+                    x.Name,
+                    x.l.BookId,
+                    x.Title, 
+                    x.l.BorrowedAt, 
+                    x.l.DueAt, 
+                    x.l.ReturnedAt,
+                    x.l.ReturnedAt == null))
             .ToListAsync(ct);
 
         return new PagedResult<LoanListItemDto>(items, r.Page, r.PageSize, total);
