@@ -1,0 +1,41 @@
+using System.Reflection;
+using FluentValidation;
+using LibraryManagementSystem.API.Middleware;
+using LibraryManagementSystem.Application.Behaviors;
+using LibraryManagementSystem.Application.Books.Commands;
+using LibraryManagementSystem.Application.Books.Queries;
+using LibraryManagementSystem.Application.Abstractions;
+using LibraryManagementSystem.Infrastructure.Persistence;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("SqlServer")
+    ?? "Server=DESKTOP-3DD07B0;Database=LibraryDB;Trusted_Connection=True;TrustServerCertificate=True";
+
+builder.Services.AddDbContext<LibraryDbContext>(opt => opt.UseSqlServer(connectionString));
+builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<LibraryDbContext>());
+
+builder.Services.AddMediatR(typeof(GetBooksQuery).Assembly);
+
+builder.Services.AddValidatorsFromAssembly(typeof(CreateBookValidator).Assembly);
+
+builder.Services.AddMemoryCache();
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<RequestTimingMiddleware>();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapControllers();
+
+app.Run();
