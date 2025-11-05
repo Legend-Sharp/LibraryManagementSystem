@@ -4,49 +4,46 @@ obj/
 *.dll
 *.exe
 *.pdb
-*.mdb
 *.cache
-*.db
 *.log
+*.db
 
 ## NuGet packages
-*.nuspec
 *.nupkg
 packages/
 
 ## ========== Rider / IntelliJ ==========
 .idea/
 *.iml
-/shelf/
-/workspace.xml
-/modules.xml
-/contentModel.xml
-/projectSettingsUpdater.xml
-
-## Editor-based HTTP Client requests
-/httpRequests/
-
-## Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+shelf/
+workspace.xml
+modules.xml
+contentModel.xml
+projectSettingsUpdater.xml
 
 ## ========== Visual Studio ==========
 *.user
 *.suo
-*.vs/
+.vs/
 
-## ========== Test output ==========
+## Test output
 TestResults/
 *.coverage
 *.coveragejson
+
+## ========== HTTP Client ==========
+httpRequests/
+
+## ========== Data Sources ==========
+dataSources/
+dataSources.local.xml
 
 ## ========== OS generated ==========
 .DS_Store
 Thumbs.db
 
 ## ========== EF Core ==========
-# Migrations snapshots are optional:
-# *Snapshot.cs
+*Snapshot.cs
 
 ## ========== Secrets ==========
 **/secrets.json
