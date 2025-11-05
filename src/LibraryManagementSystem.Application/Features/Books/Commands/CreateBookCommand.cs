@@ -25,6 +25,7 @@ public sealed class CreateBookHandler(IAppDbContext db) : IRequestHandler<Create
     public async Task<BookDto> Handle(CreateBookCommand request, CancellationToken ct)
     {
         var book = Book.Create(request.Title, request.Author, Isbn.Create(request.Isbn), request.TotalCopies);
+        
         await db.Books.AddAsync(book, ct);
         await db.SaveChangesAsync(ct);
 

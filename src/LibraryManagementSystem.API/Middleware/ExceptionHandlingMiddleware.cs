@@ -29,7 +29,6 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
 
         var problem = new
         {
-            type   = "about:blank",
             title,
             status = (int)status,
             detail = ex.Message,

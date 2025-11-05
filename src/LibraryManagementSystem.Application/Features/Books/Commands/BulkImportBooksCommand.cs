@@ -43,6 +43,7 @@ public sealed class BulkImportBooksHandler(IAppDbContext db) : IRequestHandler<B
         for (var i = 0; i < toAdd.Count; i += batchSize)
         {
             var batch = toAdd.Skip(i).Take(batchSize).ToList();
+            
             await db.Books.AddRangeAsync(batch, ct);
             await db.SaveChangesAsync(ct);
         }
