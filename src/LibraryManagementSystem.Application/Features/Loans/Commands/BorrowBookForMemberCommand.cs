@@ -4,7 +4,7 @@ using LibraryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Loans.Commands;
+namespace LibraryManagementSystem.Application.Features.Loans.Commands;
 
 public sealed record BorrowBookForMemberCommand(Guid MemberId, Guid BookId, DateTime? DueAt) : IRequest<Guid>;
 

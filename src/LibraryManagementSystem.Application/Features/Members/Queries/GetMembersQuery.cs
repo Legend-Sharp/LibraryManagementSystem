@@ -1,10 +1,10 @@
 ﻿using LibraryManagementSystem.Application.Abstractions;
 using LibraryManagementSystem.Application.Common;
-using LibraryManagementSystem.Application.Members.DTOs;
+using LibraryManagementSystem.Application.Features.Members.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Members.Queries;
+namespace LibraryManagementSystem.Application.Features.Members.Queries;
 
 public sealed record GetMembersQuery(int Page = 1, int PageSize = 20, string? Search = null) : IRequest<PagedResult<MemberDto>>, ICacheableQuery
 {

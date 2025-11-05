@@ -1,10 +1,10 @@
 ﻿using LibraryManagementSystem.Application.Abstractions;
-using LibraryManagementSystem.Application.Books.DTOs;
 using LibraryManagementSystem.Application.Common;
+using LibraryManagementSystem.Application.Features.Books.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Books.Queries;
+namespace LibraryManagementSystem.Application.Features.Books.Queries;
 
 public sealed record GetBooksQuery(int Page = 1, int PageSize = 20, string? Search = null) : IRequest<PagedResult<BookDto>>, ICacheableQuery
 {

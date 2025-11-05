@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using LibraryManagementSystem.Application.Members.Commands;
 using LibraryManagementSystem.Application.Common;
-using LibraryManagementSystem.Application.Members.DTOs;
-using LibraryManagementSystem.Application.Members.Queries;
+using LibraryManagementSystem.Application.Features.Members.Commands;
+using LibraryManagementSystem.Application.Features.Members.DTOs;
+using LibraryManagementSystem.Application.Features.Members.Queries;
 using LibraryManagementSystem.Domain.Entities;
 
 namespace LibraryManagementSystem.Tests.Members;

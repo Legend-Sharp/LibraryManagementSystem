@@ -1,7 +1,7 @@
-﻿using LibraryManagementSystem.Application.Members.Commands;
-using LibraryManagementSystem.Application.Members.DTOs;
-using LibraryManagementSystem.Application.Members.Queries;
-using LibraryManagementSystem.Application.Common;
+﻿using LibraryManagementSystem.Application.Common;
+using LibraryManagementSystem.Application.Features.Members.Commands;
+using LibraryManagementSystem.Application.Features.Members.DTOs;
+using LibraryManagementSystem.Application.Features.Members.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

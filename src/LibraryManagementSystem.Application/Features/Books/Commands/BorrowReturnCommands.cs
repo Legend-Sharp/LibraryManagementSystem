@@ -3,7 +3,7 @@ using LibraryManagementSystem.Application.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryManagementSystem.Application.Books.Commands;
+namespace LibraryManagementSystem.Application.Features.Books.Commands;
 
 public sealed record BorrowBookCommand(Guid BookId) : IRequest;
 public sealed record ReturnBookCommand(Guid BookId) : IRequest;
