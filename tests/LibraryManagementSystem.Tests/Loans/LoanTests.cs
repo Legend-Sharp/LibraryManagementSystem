@@ -1,7 +1,10 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Threading.Tasks;
+using FluentAssertions;
 using LibraryManagementSystem.Application.Features.Loans.Queries;
 using LibraryManagementSystem.Domain.Entities;
 using LibraryManagementSystem.Domain.ValueObjects;
+using Xunit;
 
 namespace LibraryManagementSystem.Tests.Loans;
 
@@ -20,10 +23,10 @@ public class LoanTests
         await db.Books.AddRangeAsync(b1, b2);
 
         // loans
-        var l1 = Loan.Create(m1.Id, b1.Id, DateTime.UtcNow);      // active
-        var l2 = Loan.Create(m1.Id, b2.Id, DateTime.UtcNow);      // returned
+        var l1 = Loan.Create(m1.Id, b1.Id, DateTime.UtcNow);
+        var l2 = Loan.Create(m1.Id, b2.Id, DateTime.UtcNow);
         l2.Return(DateTime.UtcNow.AddHours(1));
-        var l3 = Loan.Create(m2.Id, b1.Id, DateTime.UtcNow);      // active
+        var l3 = Loan.Create(m2.Id, b1.Id, DateTime.UtcNow);
 
         await db.Loans.AddRangeAsync(l1, l2, l3);
         await db.SaveChangesAsync();

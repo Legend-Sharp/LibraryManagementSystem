@@ -1,4 +1,6 @@
-﻿namespace LibraryManagementSystem.Application.Common;
+﻿using System;
+
+namespace LibraryManagementSystem.Application.Common;
 
 public interface ICacheableQuery
 {

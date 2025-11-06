@@ -1,4 +1,8 @@
-﻿using LibraryManagementSystem.Application.Abstractions;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using LibraryManagementSystem.Application.Abstractions;
 using LibraryManagementSystem.Application.Features.Members.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +20,6 @@ public sealed class GetMemberByIdHandler(IAppDbContext db) : IRequestHandler<Get
             .Select(m => new MemberDto(m.Id, m.Name, m.Email))
             .FirstOrDefaultAsync(ct);
 
-        return result ?? throw new KeyNotFoundException($"Member with id '{r.Id}' not found.");
+        return result;
     }
 }
