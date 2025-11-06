@@ -1,3 +1,5 @@
-﻿namespace LibraryManagementSystem.Application.Common;
+﻿using System.Collections.Generic;
+
+namespace LibraryManagementSystem.Application.Common;
 
 public sealed record PagedResult<T>(IReadOnlyList<T> Items, int Page, int PageSize, long TotalCount);

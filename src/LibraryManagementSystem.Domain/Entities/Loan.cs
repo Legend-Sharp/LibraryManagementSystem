@@ -1,4 +1,5 @@
-﻿using LibraryManagementSystem.Domain.Common;
+﻿using System;
+using LibraryManagementSystem.Domain.Common;
 using LibraryManagementSystem.Domain.Events;
 
 namespace LibraryManagementSystem.Domain.Entities;

@@ -1,9 +1,12 @@
-﻿using FluentAssertions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
 using LibraryManagementSystem.Application.Common;
 using LibraryManagementSystem.Application.Features.Members.Commands;
 using LibraryManagementSystem.Application.Features.Members.DTOs;
 using LibraryManagementSystem.Application.Features.Members.Queries;
 using LibraryManagementSystem.Domain.Entities;
+using Xunit;
 
 namespace LibraryManagementSystem.Tests.Members;
 
@@ -34,6 +37,7 @@ public class MemberTests
             Member.Create("Alice", "a@ex.com"),
             Member.Create("Bob", "b@ex.com"),
             Member.Create("Carol", "c@ex.com"));
+        
         await db.SaveChangesAsync();
 
         var handler = new GetMembersQueryHandler(db);
@@ -50,10 +54,11 @@ public class MemberTests
         await db.Members.AddRangeAsync(
             Member.Create("Alice", "a@ex.com"),
             Member.Create("Bob", "b@ex.com"));
+        
         await db.SaveChangesAsync();
 
         var handler = new GetMembersQueryHandler(db);
-        var res = await handler.Handle(new GetMembersQuery(1, 20, "Ali"), default);
+        var res = await handler.Handle(new GetMembersQuery(1, 20, "Ali"), CancellationToken.None);
 
         res.Items.Should().ContainSingle(m => m.Name == "Alice");
     }

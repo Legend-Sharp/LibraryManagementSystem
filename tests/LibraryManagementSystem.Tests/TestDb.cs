@@ -14,6 +14,7 @@ public static class TestDb
             .Options;
         
         var publisher = Substitute.For<IPublisher>();
+        
         return new LibraryDbContext(options, publisher);
     }
 }
