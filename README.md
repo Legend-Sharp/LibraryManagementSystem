@@ -1,27 +1,28 @@
-
 # 📚 Library Management System (Clean Architecture + CQRS + .NET 9)
 
-A production-grade backend API demonstrating Clean Architecture, CQRS using MediatR, EF Core (Code‑First), FluentValidation, caching, domain events, and automated tests.
+A production-grade backend API demonstrating **Clean Architecture**, **CQRS (MediatR)**, **EF Core (Code-First)**, **FluentValidation**, **domain events**, **caching**, **optimistic concurrency**, and **automated tests**.
 
-> ✅ Built for a technical assignment — focused on clean architecture, SOLID, maintainability, separation of concerns, and realistic enterprise patterns.
+> ✅ Built for a assignment — focused on SOLID, maintainability, separation of concerns, and realistic enterprise patterns.
 
 ---
 
 ## ✅ Features
 
 | Area | Implementation |
-|------|---------------|
-| Architecture | Clean Architecture: Domain → Application → Infrastructure → API |
-| CQRS | Commands & Queries using MediatR |
-| Persistence | SQL Server + EF Core Code‑First |
-| Domain Model | `Book`, `Member`, `Loan` (business rules enforced in domain) |
-| Domain Events | Borrow/Return raises domain events → event handlers update availability |
-| Concurrency | `RowVersion` prevents double‑borrowing race conditions |
-| Caching | Automatic caching for GET queries using MediatR pipeline |
-| Validation | FluentValidation + validation pipeline behavior |
-| Performance | Pagination + caching + async everywhere |
-| Testing | Domain + Application tests (EF InMemory) |
-| Documentation | Swagger UI with models + request/response schemas |
+|------|----------------|
+| Architecture | Clean Architecture: **Domain → Application → Infrastructure → API** |
+| CQRS | Commands/Queries via **MediatR** + pipeline behaviors (Validation, Caching) |
+| Persistence | **SQL Server** + **EF Core** (code-first, migrations) |
+| Domain Model | `Book`, `Member`, `Loan` with business rules inside the domain |
+| Domain Events | Borrow/Return raise events; handlers update book availability |
+| Concurrency | **RowVersion** & safe inventory math to avoid lost updates |
+| Soft Delete | `Book.IsDeleted` + **global query filter** (books disappear from queries) |
+| Caching | Short-lived GET caching via MediatR behavior |
+| Validation | **FluentValidation** + validation behavior |
+| Performance | Pagination on list endpoints + async EF queries |
+| Dev UX | **Auto-migrate** and optional **seed data** on startup (configurable) |
+| Testing | Domain & Application tests (EF InMemory) |
+| Docs | Swagger UI with models and request/response schemas |
 
 ---
 
@@ -29,90 +30,102 @@ A production-grade backend API demonstrating Clean Architecture, CQRS using Medi
 
 ```
 src
- ├── LibraryManagementSystem.API            → Controllers, DI setup, middleware
- ├── LibraryManagementSystem.Application    → CQRS (Commands / Queries), pipeline behaviors, handlers
- ├── LibraryManagementSystem.Domain         → Entities, ValueObjects, Domain Events (no deps)
- └── LibraryManagementSystem.Infrastructure → DbContext, EF Core, persistence, SQL Server
+ ├─ LibraryManagementSystem.API            → Controllers, DI, middleware, Swagger
+ ├─ LibraryManagementSystem.Application    → CQRS (Commands/Queries), DTOs, Behaviors
+ ├─ LibraryManagementSystem.Domain         → Entities, ValueObjects, Domain Events (no deps)
+ └─ LibraryManagementSystem.Infrastructure → DbContext, EF config, migrations, seeding
 
 tests
- └── LibraryManagementSystem.Tests          → Domain + Application tests (EF InMemory)
+ └─ LibraryManagementSystem.Tests          → Domain + Application tests (EF InMemory)
 ```
 
-Principles followed:
-- Dependency Rule (Domain has no dependencies)
-- No business logic in controllers
-- Command / Query separation
+Principles:
+- Dependency Rule (Domain has **no** external dependencies)
+- No business logic in controllers (thin endpoints)
+- Clear Command/Query separation
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- .NET 9 SDK
-- SQL Server installed or LocalDB
+- **.NET 9 SDK**
+- **SQL Server** (Developer/Express/LocalDB)
 
 ---
 
-### 1️⃣ Clone
+### 1) Clone
 
-```sh
-git clone <your_repo_url>
+```bash
+git clone https://github.com/Legend-Sharp/LibraryManagementSystem
 cd LibraryManagementSystem
 ```
 
 ---
 
-### 2️⃣ Configure DB Connection
+### 2) Configure connection string & startup flags
 
-Modify:
-`src/LibraryManagementSystem.API/appsettings.json`
+Modify `src/LibraryManagementSystem.API/appsettings.Development.json`:
 
 ```json
-"ConnectionStrings": {
-  "LibraryDb": "Server="<YOUR_SQL_SERVER_CONNECTION_STRING>";Database=LibraryDb;Trusted_Connection=True;TrustServerCertificate=True;"
+{
+  "ConnectionStrings": {
+    "SqlServer": "Server=;Database=LibraryDB;Trusted_Connection=True;TrustServerCertificate=True"
+  },
+  "AutoMigrate": true,
+  "SeedOnStartup": true
 }
 ```
 
-👉 Replace `"<YOUR_SQL_SERVER_CONNECTION_STRING>"` with your SQL Server instance.
-
 ---
 
-### 3️⃣ Apply migrations
+### 3) Migrations
 
-```sh
+```bash
 dotnet ef migrations add InitialCreate -p ./src/LibraryManagementSystem.Infrastructure -s ./src/LibraryManagementSystem.API
-dotnet ef database update -p ./src/LibraryManagementSystem.Infrastructure -s ./src/LibraryManagementSystem.API
 ```
 
 ---
 
-### 4️⃣ Run
+### 4) Run the API
 
-```sh
+```bash
 dotnet run --project ./src/LibraryManagementSystem.API
 ```
 
-Swagger:
-http://localhost:5134/swagger/index.html
+Swagger URL:
+```
+http://localhost:<port>/swagger
+```
 
 ---
 
 ## 🔥 Endpoints Overview
 
 ### Books
-- GET  `/api/books`
-- POST `/api/books`
-- POST `/api/books/bulk-import`
+| Method | URL |
+|--------|-----|
+| GET    | `/api/books` |
+| GET    | `/api/books/{id}` |
+| POST   | `/api/books` |
+| PUT    | `/api/books/{id}` |
+| DELETE | `/api/books/{id}` |
+| POST   | `/api/books/bulk-import` |
 
 ### Members
-- POST `/api/members`
-- GET  `/api/members`
-- GET  `/api/members/{id}/loans`
+| Method | URL |
+|--------|-----|
+| GET    | `/api/members` |
+| GET    | `/api/members/{id}` |
+| POST   | `/api/members` |
 
 ### Loans
-- POST `/api/loans/borrow`
-- POST `/api/loans/{loanId}/return`
-- GET  `/api/loans?memberId=&active=`
+| Method | URL |
+|--------|-----|
+| GET    | `/api/loans?memberId=&bookId=&active=` |
+| GET    | `/api/loans/{id}` |
+| POST   | `/api/loans/borrow` |
+| POST   | `/api/loans/{loanId}/return` |
 
 ---
 
@@ -120,18 +133,24 @@ http://localhost:5134/swagger/index.html
 
 Run tests:
 
-```sh
+```bash
 dotnet test
 ```
 
-Included tests:
-- domain behavior (`Borrow`, `Return`, edge cases)
-- application tests using EF InMemory
-- validators and paged queries
+Tests include:
+- Domain tests (borrow, return, edge cases)
+- Application tests using EF InMemory
+- Validator tests
+- Query pagination
 
 ---
 
 ## 🏁 Final Notes
 
-This project demonstrates clean separation of concerns, domain‑driven thinking, and production‑ready CQRS patterns.
+- Thin controllers, rich domain model, and clear separation with CQRS.
+- Auto-migration + optional seed data enables quick setup.
+- Designed for real-world maintainability and extensibility.
 
+---
+
+Enjoy building ✅🚀
