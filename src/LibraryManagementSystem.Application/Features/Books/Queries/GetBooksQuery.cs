@@ -39,7 +39,8 @@ public sealed class GetBooksQueryHandler(IAppDbContext db) : IRequestHandler<Get
                     b.Author,
                     b.Isbn.Value,
                     b.TotalCopies,
-                    b.AvailableCopies))
+                    b.AvailableCopies,
+                    b.IsDeleted))
             .ToListAsync(ct);
 
         return new PagedResult<BookDto>(items, request.Page, request.PageSize, total);

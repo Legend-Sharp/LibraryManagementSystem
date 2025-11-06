@@ -8,5 +8,6 @@ public sealed record BookDto(
     string Author,
     string Isbn,
     int TotalCopies,
-    int AvailableCopies
+    int AvailableCopies,
+    bool IsDeleted
 );

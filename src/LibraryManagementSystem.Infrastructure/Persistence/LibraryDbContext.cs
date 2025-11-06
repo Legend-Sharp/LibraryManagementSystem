@@ -40,6 +40,8 @@ public class LibraryDbContext : DbContext, IAppDbContext
             e.Property(x => x.TotalCopies).IsRequired();
             e.Property(x => x.AvailableCopies).IsRequired();
             e.Property<byte[]>("RowVersion").IsRowVersion().HasColumnName("RowVersion");
+            e.Property(x => x.IsDeleted).HasColumnName("IsDeleted").HasDefaultValue(false).IsRequired();
+            e.HasQueryFilter(x => !x.IsDeleted);
         });
 
         b.Entity<Member>(e =>

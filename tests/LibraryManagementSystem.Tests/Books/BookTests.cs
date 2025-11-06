@@ -21,7 +21,7 @@ public class BookTests
     {
         var book = Book.Create("X", "Y", Isbn.Create("0123456789"), 1);
         book.Borrow();
-        Action act = () => book.Borrow();
+        var act = () => book.Borrow();
         act.Should().Throw<InvalidOperationException>();
     }
 

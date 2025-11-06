@@ -23,7 +23,8 @@ public sealed class GetBookByIdQueryHandler(IAppDbContext db) : IRequestHandler<
                 b.Author,
                 b.Isbn.Value,
                 b.TotalCopies,
-                b.AvailableCopies))
+                b.AvailableCopies,
+                b.IsDeleted))
             .FirstOrDefaultAsync(ct);
 
         return result;
