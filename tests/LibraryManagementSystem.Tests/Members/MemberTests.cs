@@ -41,7 +41,7 @@ public class MemberTests
         await db.SaveChangesAsync();
 
         var handler = new GetMembersQueryHandler(db);
-        PagedResult<MemberDto> res = await handler.Handle(new GetMembersQuery(1, 2, null), default);
+        PagedResult<MemberDto> res = await handler.Handle(new GetMembersQuery(1, 2), CancellationToken.None);
 
         res.Items.Should().HaveCount(2);
         res.TotalCount.Should().Be(3);
@@ -50,7 +50,7 @@ public class MemberTests
     [Fact]
     public async Task Applies_search_filter()
     {
-        using var db = TestDb.NewContext(nameof(Applies_search_filter));
+        await using var db = TestDb.NewContext(nameof(Applies_search_filter));
         await db.Members.AddRangeAsync(
             Member.Create("Alice", "a@ex.com"),
             Member.Create("Bob", "b@ex.com"));

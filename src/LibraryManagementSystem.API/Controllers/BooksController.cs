@@ -40,4 +40,25 @@ public class BooksController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BulkImportResult), StatusCodes.Status200OK)]
     public async Task<ActionResult<BulkImportResult>> BulkImport([FromBody] BulkImportBooksCommand cmd)
         => Ok(await mediator.Send(cmd));
+    
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(BookDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<BookDto>> Update(Guid id, [FromBody] UpdateBookCommand cmd)
+    {
+        if (id != cmd.Id) return BadRequest("Route id and payload id must match.");
+        var updated = await mediator.Send(cmd);
+        return Ok(updated);
+    }
+    
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await mediator.Send(new DeleteBookCommand(id));
+        return NoContent();
+    }
 }

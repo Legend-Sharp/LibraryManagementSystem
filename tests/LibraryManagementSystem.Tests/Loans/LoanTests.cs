@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using LibraryManagementSystem.Application.Features.Loans.Queries;
@@ -22,7 +23,6 @@ public class LoanTests
         await db.Members.AddRangeAsync(m1, m2);
         await db.Books.AddRangeAsync(b1, b2);
 
-        // loans
         var l1 = Loan.Create(m1.Id, b1.Id, DateTime.UtcNow);
         var l2 = Loan.Create(m1.Id, b2.Id, DateTime.UtcNow);
         l2.Return(DateTime.UtcNow.AddHours(1));
@@ -33,10 +33,10 @@ public class LoanTests
 
         var handler = new GetLoansQueryHandler(db);
 
-        var pageForM1Active = await handler.Handle(new GetLoansQuery(1, 20, m1.Id, null, true), default);
+        var pageForM1Active = await handler.Handle(new GetLoansQuery(1, 20, m1.Id, null, true), CancellationToken.None);
         pageForM1Active.Items.Should().OnlyContain(x => x.MemberId == m1.Id && x.IsActive);
 
-        var pageForM1All = await handler.Handle(new GetLoansQuery(1, 20, m1.Id, null, null), default);
+        var pageForM1All = await handler.Handle(new GetLoansQuery(1, 20, m1.Id, null, null), CancellationToken.None);
         pageForM1All.Items.Should().HaveCount(2);
     }
 }

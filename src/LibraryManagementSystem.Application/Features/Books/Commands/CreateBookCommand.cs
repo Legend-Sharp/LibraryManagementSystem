@@ -31,6 +31,6 @@ public sealed class CreateBookHandler(IAppDbContext db) : IRequestHandler<Create
         await db.Books.AddAsync(book, ct);
         await db.SaveChangesAsync(ct);
 
-        return new BookDto(book.Id, book.Title, book.Author, book.Isbn.Value, book.TotalCopies, book.AvailableCopies);
+        return new BookDto(book.Id, book.Title, book.Author, book.Isbn.Value, book.TotalCopies, book.AvailableCopies, book.IsDeleted);
     }
 }
